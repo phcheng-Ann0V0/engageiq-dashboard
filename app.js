@@ -71,7 +71,14 @@ function whyTemplate(x){
   return `<div class="explain-list"><div class="explain personal-explain"><b>◎</b><span>${personal}</span></div>${x.why.map((w,i)=>`<div class="explain"><b>${i+1}</b><span>${w}</span></div>`).join("")}</div>
   <div class="factor">${[["Interest relevance",Math.min(100,x.relevance+interestMatch(x)*5)],["Community health",x.health],["Visibility potential",x.visibility]].map(v=>`<div class="factor-row"><span>${v[0]}</span><div class="bar"><i style="width:${v[1]}%"></i></div><b>${v[1]}</b></div>`).join("")}<div class="factor-row"><span>Effort to engage</span><div class="bar"><i style="width:${x.effort==="Low"?25:x.effort==="Medium"?55:82}%"></i></div><b>${x.effort[0]}</b></div></div>`}
 function actionsTemplate(x){const context=state.interests.length?`Tailored using: ${state.interests.join(", ")}`:"Add interests to further tailor these ideas.";return `<p class="eyebrow">✦ LLM-SUGGESTED · ${context}</p>${x.actions.map(a=>`<div class="suggestion"><div class="suggestion-top"><b>${a.title}</b><em>${a.type}</em></div><p>${a.body}</p><small>${a.impact}</small><button class="action-button">Add to engagement plan</button></div>`).join("")}`;}
-function setFeedback(id,value){const x=data.find(o=>o.id===id);const next=state.feedback[id]===value?null:value;state.feedback[id]=next;if(next&&x)trainBandit(x,{engage:1,bookmark:.6,skip:-1}[next]);localStorage.setItem("engageiq-feedback",JSON.stringify(state.feedback));renderList();renderDetail();renderMetrics();toast(next?`${feedbackLabel[value].replace(/[✓×◇] /,"")} saved · ranking learner updated`:"Feedback cleared");}
+function selectNextOpportunity(currentId){
+  const options=filtered();
+  if(!options.length) return;
+  const currentIndex=options.findIndex(x=>x.id===currentId);
+  const next=options[(currentIndex+1+options.length)%options.length] || options[0];
+  state.selected=next.id;
+}
+function setFeedback(id,value){const x=data.find(o=>o.id===id);const next=state.feedback[id]===value?null:value;state.feedback[id]=next;if(next&&x){trainBandit(x,{engage:1,bookmark:.6,skip:-1}[next]);selectNextOpportunity(id);}localStorage.setItem("engageiq-feedback",JSON.stringify(state.feedback));renderList();renderDetail();renderMetrics();toast(next?`${feedbackLabel[value].replace(/[✓×◇] /,"")} saved · ranking learner updated`:"Feedback cleared");}
 function renderMetrics(){
   const active=Object.values(state.feedback).filter(x=>x==="engage"||x==="bookmark").length;
   const highMatch=data.filter(x=>x.score>=80).length;
