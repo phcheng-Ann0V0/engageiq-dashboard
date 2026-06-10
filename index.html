@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EngageIQ | Engagement Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="#"><span class="brand-mark">E</span><span>Engage<span>IQ</span></span></a>
+    <nav>
+      <a class="nav-item active" href="#opportunities"><span>⌁</span> Opportunities</a>
+      <a class="nav-item" href="#interests"><span>◎</span> Your interests</a>
+      <a class="nav-item" href="#analytics"><span>⌗</span> Analytics</a>
+      <a class="nav-item" href="#brief"><span>▤</span> Weekly brief</a>
+    </nav>
+    <div class="side-foot">
+      <button class="restart-button" id="restartButton">↻ Restart & forget memory</button>
+      <div class="sync"><i></i> Data synced just now</div>
+    </div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ENGAGEIQ / WEEK 23</p>
+        <h1>Engagement intelligence for GitHub &amp; Reddit</h1>
+        <p class="subhead">Find high-leverage conversations and contributions shaped around your interests.</p>
+      </div>
+      <div class="top-actions">
+        <button class="icon-button" id="themeButton" aria-label="Toggle theme">◐</button>
+        <button class="primary" id="briefButton">Download weekly brief <span>↓</span></button>
+      </div>
+    </header>
+
+    <section class="metrics" aria-label="Weekly metrics">
+      <article><span>HIGH-MATCH OPPORTUNITIES</span><strong id="highMatchMetric">12</strong><small><b>↑ 18%</b> from last week</small></article>
+      <article><span>POTENTIAL REACH</span><strong id="reachMetric">284K</strong><small><b>↑ 31%</b> audience overlap</small></article>
+      <article><span>ENGAGEMENT MOMENTUM</span><strong id="momentumMetric">+24%</strong><small><b>↑ 8 pts</b> week over week</small></article>
+      <article><span>YOUR ACTIONS</span><strong id="actionMetric">0</strong><small>Engaged or bookmarked</small></article>
+    </section>
+
+    <section class="interests-panel" id="interests">
+      <div>
+        <p class="eyebrow">PERSONALIZE WITH LLM CONTEXT</p>
+        <h2>Your interests</h2>
+        <p>Tell EngageIQ what you know, what you want to learn, and how you prefer to contribute. Your answers rerank opportunities and shape suggested actions.</p>
+      </div>
+      <form id="interestForm">
+        <label for="interestInput">Topics, skills, or goals</label>
+        <div class="interest-input-row"><input id="interestInput" type="text" placeholder="e.g. AI agents, Python, data engineering, beginner-friendly PRs"><button class="primary" type="submit">Personalize</button></div>
+        <div class="interest-chips" id="interestChips"></div>
+        <small>Stored only in this browser. Restart clears this context and all feedback memory.</small>
+      </form>
+    </section>
+
+    <section class="layout" id="opportunities">
+      <div class="opportunity-panel">
+        <div class="section-title">
+          <div><p class="eyebrow">RANKED FOR YOU</p><h2>Top opportunities</h2></div>
+          <div class="filter-row">
+            <button class="filter active" data-filter="All">All</button>
+            <button class="filter" data-filter="GitHub">GitHub</button>
+            <button class="filter" data-filter="Reddit">Reddit</button>
+            <select id="topicFilter" aria-label="Filter by topic"><option value="All">All topics</option></select>
+          </div>
+        </div>
+        <div id="opportunityList" class="opportunity-list"></div>
+      </div>
+
+      <aside class="detail-panel" id="detailPanel"></aside>
+    </section>
+
+    <section id="analytics" class="analytics">
+      <div class="section-title">
+        <div><p class="eyebrow">BATCH ANALYTICS</p><h2>What’s moving this week</h2></div>
+        <span class="data-note">Based on the full opportunity dataset</span>
+      </div>
+      <div class="analytics-grid">
+        <article class="chart-card wide">
+          <div class="card-heading"><div><span>ENGAGEMENT VOLUME</span><h3>Momentum over time</h3></div><b>+24.3%</b></div>
+          <div id="volumeChart" class="chart"></div>
+        </article>
+        <article class="chart-card">
+          <div class="card-heading"><div><span>TOP TOPICS</span><h3>Category breakdown</h3></div></div>
+          <div id="topicChart" class="donut-wrap"></div>
+        </article>
+        <article class="chart-card full analytics-table-card">
+          <div class="card-heading"><div><span>TRENDING TOPICS</span><h3>Top 15 conversation themes</h3></div><b>FULL DATASET</b></div>
+          <div id="trendingTopics" class="analytics-table"></div>
+        </article>
+        <article class="chart-card full analytics-table-card">
+          <div class="card-heading"><div><span>MOST ACTIVE COMMUNITIES</span><h3>Top 15 GitHub &amp; Reddit communities</h3></div><b>BY ENGAGEMENT VOLUME</b></div>
+          <div id="growthList" class="growth-list"></div>
+        </article>
+        <article class="chart-card wide insight-card">
+          <div class="spark">✦</div>
+          <div><span>WEEKLY SIGNAL</span><h3>AI agent tooling is crossing into mainstream developer conversations.</h3><p>Activity is up across both GitHub and Reddit, while unanswered implementation questions create a strong opening for useful, non-promotional contributions.</p></div>
+          <button id="signalButton">View matching opportunities →</button>
+        </article>
+      </div>
+    </section>
+
+    <section id="brief" class="brief">
+      <div><p class="eyebrow">WEEKLY ENGAGEMENT BRIEF</p><h2>Take your opportunity plan with you.</h2><p>Download a concise CSV, or open a print-ready brief that can be saved as PDF.</p></div>
+      <div><button class="secondary" id="csvButton">Download CSV</button><button class="primary" id="printButton">Print / Save PDF</button></div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
